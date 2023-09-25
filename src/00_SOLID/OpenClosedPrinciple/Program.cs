@@ -5,43 +5,47 @@
 // bez modyfikowania kodu źródłowego.
 
 // Przykład łamiący zasadę otwarte – zamknięte
-TaxCalculator calculator = new TaxCalculator();
+ITaxCalculator standardCalculator = new StandardTaxCalculator();
+ITaxCalculator progressiveCalculator = new StandardTaxCalculator();
 
-decimal standardTax = calculator.CalculateTax(60000, "Standard");
-decimal progressiveTax = calculator.CalculateTax(60000, "Progressive");
+decimal standardTax = standardCalculator.CalculateTax(60_000);
+decimal progressiveTax = standardCalculator.CalculateTax(60_000);
 
 Console.WriteLine($"Standard Tax: {standardTax}");
 Console.WriteLine($"Progressive Tax: {progressiveTax}");
 
-public class TaxCalculator
+public interface ITaxCalculator
+{
+    decimal CalculateTax(decimal income);
+}
+
+public class StandardTaxCalculator : ITaxCalculator
+{
+    public decimal CalculateTax(decimal income)
+    {
+        return income * 0.2m; // Standard tax rate of 20%
+    }
+}
+
+public class ProgressiveTaxCalculator : ITaxCalculator
 {
     private decimal incomeLimit;
 
-    public TaxCalculator(decimal incomeLimit = 50_000)
+    public ProgressiveTaxCalculator(decimal incomeLimit = 50_000)
     {
         this.incomeLimit = incomeLimit;
     }
 
-    public decimal CalculateTax(decimal income, string type)
+    public decimal CalculateTax(decimal income)
     {
-        decimal tax = 0;
-
-        if (type == "Standard")
+        if (income <= incomeLimit)        // Magic Numbers
         {
-            tax = income * 0.2m; // Standard tax rate of 20%
+            return income * 0.1m; // 10% tax for income up to 50000
         }
-        else if (type == "Progressive")
+        else
         {
-            if (income <= incomeLimit)        // Magic Numbers
-            {
-                tax = income * 0.1m; // 10% tax for income up to 50000
-            }
-            else
-            {
-                tax = income * 0.3m; // 30% tax for income above 50000
-            }
+            return income * 0.3m; // 30% tax for income above 50000
         }
-
-        return tax;
     }
 }
+
