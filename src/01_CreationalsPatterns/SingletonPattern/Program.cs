@@ -9,7 +9,7 @@ namespace SingletonPattern
         {
             Console.WriteLine("Hello Singleton Pattern!");
 
-            // ConfigManagerTest();
+            ConfigManagerTest();
 
             LoadBalancerTest();
 
