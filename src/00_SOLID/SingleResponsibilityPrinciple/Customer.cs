@@ -14,9 +14,12 @@ class Customer
     public string City { get; set; }
     public string PostCode { get; set; }
     public string Street { get; set; }
-    public string Email { get; set; }
+    public string Email { get; set; }    
+}
 
-    public void ValidateEmail(string email)
+class Helper
+{
+    public static void ValidateEmail(string email)
     {
         if (!email.Contains("@") || !email.Contains("."))
         {
@@ -24,7 +27,7 @@ class Customer
         }
     }
 
-    public void ValidatePostCode(string postcode)
+    public static void ValidatePostCode(string postcode)
     {
         if (postcode.Length != 5)
         {
