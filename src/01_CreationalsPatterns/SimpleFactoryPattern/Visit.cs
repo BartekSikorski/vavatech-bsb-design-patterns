@@ -2,13 +2,50 @@
 
 namespace SimpleFactoryPattern
 {
-    public class Visit
+    public class NfzVisit : Visit
+    {
+        public NfzVisit(TimeSpan duration, decimal pricePerHour) : base(duration, pricePerHour)
+        {
+        }
+
+        public override decimal CalculateCost()
+        {
+            return 0;
+        }
+    }
+
+    public class PrivateVisit : Visit
+    {
+        public PrivateVisit(TimeSpan duration, decimal pricePerHour) : base(duration, pricePerHour)
+        {
+        }
+
+        public override decimal CalculateCost()
+        {
+            return (decimal)Duration.TotalHours * PricePerHour;
+        }
+    }
+
+    public class CompanyVisit : Visit
+    {
+        private decimal companyDiscountPercentage;
+
+        public CompanyVisit(TimeSpan duration, decimal pricePerHour, decimal companyDiscountPercentage) : base(duration, pricePerHour)
+        {
+            this.companyDiscountPercentage = companyDiscountPercentage;
+        }
+
+        public override decimal CalculateCost()
+        {
+            return (decimal)Duration.TotalHours * PricePerHour * companyDiscountPercentage;
+        }
+    }
+
+    public abstract class Visit
     {
         public DateTime VisitDate { get; set; }
         public TimeSpan Duration { get; set; }
         public decimal PricePerHour { get; set; }
-
-        private const decimal companyDiscountPercentage = 0.9m;
 
         public Visit(TimeSpan duration, decimal pricePerHour)
         {
@@ -17,33 +54,7 @@ namespace SimpleFactoryPattern
             PricePerHour = pricePerHour;
         }
 
-        public decimal CalculateCost(VisitType kind)
-        {
-            decimal cost = 0;
-
-            switch (kind)         
-            {
-                case VisitType.Nfz: 
-                    cost = 0;
-                    break;
-                case VisitType.Private:
-                    cost = (decimal)Duration.TotalHours * PricePerHour;
-                    break;
-                case VisitType.Company:
-                    cost = (decimal)Duration.TotalHours * PricePerHour * companyDiscountPercentage;
-                    break;
-            }
-
-            return cost;
-        }
+        public abstract decimal CalculateCost();
     }
 
-
-    public enum VisitType
-    {
-        Nfz,
-        Private,
-        Company
-
-    }
 }

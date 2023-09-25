@@ -27,9 +27,22 @@ namespace SimpleFactoryPattern
                 {
                     TimeSpan duration = TimeSpan.FromMinutes(minutes);
 
-                    Visit visit = new Visit(duration, 100);
+                    Visit visit = null;
 
-                    decimal totalAmount = visit.CalculateCost(visitType);
+                    if (visitType == "N")
+                    {
+                        visit = new NfzVisit(duration, 0);
+                    }
+                    else if (visitType == "P")
+                    {
+                        visit = new PrivateVisit(duration, 100);
+                    }
+                    else if (visitType == "F")
+                    {
+                        visit = new CompanyVisit(duration, 100, 0.9m);
+                    }
+
+                    decimal totalAmount = visit.CalculateCost();
 
                     if (totalAmount == 0)
                         Console.ForegroundColor = ConsoleColor.Green;
