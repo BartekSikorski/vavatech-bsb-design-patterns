@@ -4,6 +4,7 @@ using System.Text;
 
 namespace SingletonPattern
 {
+
     public class LoadBalancer : ThreadSafeSingleton<LoadBalancer>
     {
         private readonly List<Server> servers;
