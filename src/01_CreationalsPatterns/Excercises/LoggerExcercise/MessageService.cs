@@ -4,9 +4,9 @@ public class MessageService
 {
     public Logger logger;
 
-    public MessageService()
+    public MessageService(Logger logger)
     {
-        logger = new Logger();
+        this.logger = logger;
     }
 
     public void Send(string message)
