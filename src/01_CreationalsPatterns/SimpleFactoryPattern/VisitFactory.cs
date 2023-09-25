@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 namespace SimpleFactoryPattern
 {
     // Factory
-    public class VisitFactory
+    public class VisitCalculatorFactory
     {
-        public static Visit Create(string visitType, TimeSpan duration)
+        public static IVisitCalculator Create(string visitType)
         {
             switch (visitType)
             {
                 case "N":
-                    return new NfzVisit(duration, 0);
+                    return new NfzVisitCalculator();
                 case "P":
-                    return new PrivateVisit(duration, 100);
+                    return new PrivateVisitCalculator(100);
                 case "F":
-                    return new CompanyVisit(duration, 100, 0.9m);
-                case "T":
-                    return new TeleVisit(duration, 100);
+                    return new CompanyVisitCalculator(100, 0.9m);                
                 default:
                     throw new NotSupportedException($"Typ wizyty {visitType} nie jest obsługiwany.");
             }

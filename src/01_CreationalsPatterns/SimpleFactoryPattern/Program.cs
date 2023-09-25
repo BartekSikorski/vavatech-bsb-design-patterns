@@ -29,9 +29,11 @@ namespace SimpleFactoryPattern
 
                     try
                     {
-                        Visit visit = VisitFactory.Create(visitType, duration);
+                        IVisitCalculator visitCalculator =  VisitCalculatorFactory.Create(visitType);
 
-                        decimal totalAmount = visit.CalculateCost();
+                        Visit visit = new Visit(duration);
+
+                        decimal totalAmount = visitCalculator.CalculateCost(visit);
 
                         if (totalAmount == 0)
                             Console.ForegroundColor = ConsoleColor.Green;
