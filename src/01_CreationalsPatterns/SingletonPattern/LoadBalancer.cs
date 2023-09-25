@@ -10,7 +10,7 @@ namespace SingletonPattern
 
         private readonly Random random = new Random();
 
-        public LoadBalancer()
+        private LoadBalancer()
         {
             Console.WriteLine("Initialize");
 
@@ -22,6 +22,25 @@ namespace SingletonPattern
                 new Server { Name = "ServerD", IP = "192.168.0.21" },
                 new Server { Name = "ServerE", IP = "192.168.0.22" },
             };
+        }
+
+        private static object syncLock = new object();
+
+        private static LoadBalancer _instance;
+        public static LoadBalancer Instance
+        {
+            get
+            {
+                lock (syncLock)                             // Monitor.Enter(syncLock);
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new LoadBalancer();
+                    }
+                }                                           // Monitor.Exit(syncLock);
+
+                return _instance;
+            }
         }
 
         // Simple Load Balancer

@@ -9,6 +9,15 @@ namespace SingletonPattern
         {
             Console.WriteLine("Hello Singleton Pattern!");
 
+            // ConfigManagerTest();
+
+            LoadBalancerTest();
+
+            Console.ReadKey();
+        }
+
+        private static void ConfigManagerTest()
+        {
             ConfigManager configManager = ConfigManager.Instance;
             configManager.Set("name", "Marcin");
 
@@ -25,23 +34,20 @@ namespace SingletonPattern
             }
 
             Console.WriteLine(name);
-
-            // LoadBalancerTest();
-
-            Console.ReadKey();
         }
 
-      
 
         private static void LoadBalancerTest()
         {
+            Task.Run(() => LoadBalanceRequestTest(15));
+            Task.Run(() => LoadBalanceRequestTest(15));
             Task.Run(() => LoadBalanceRequestTest(15));
             Task.Run(() => LoadBalanceRequestTest(15));
         }
 
         private static void LoadBalanceRequestTest(int numberOfRequests)
         {
-            LoadBalancer loadBalancer = new LoadBalancer();
+            LoadBalancer loadBalancer = LoadBalancer.Instance;
 
             for (int i = 0; i < numberOfRequests; i++)
             {
