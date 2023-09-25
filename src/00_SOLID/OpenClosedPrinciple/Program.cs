@@ -6,46 +6,11 @@
 
 // Przykład łamiący zasadę otwarte – zamknięte
 ITaxCalculator standardCalculator = new StandardTaxCalculator();
-ITaxCalculator progressiveCalculator = new StandardTaxCalculator();
+ITaxCalculator progressiveCalculator = new ProgressiveTaxCalculator();
 
 decimal standardTax = standardCalculator.CalculateTax(60_000);
 decimal progressiveTax = standardCalculator.CalculateTax(60_000);
 
 Console.WriteLine($"Standard Tax: {standardTax}");
 Console.WriteLine($"Progressive Tax: {progressiveTax}");
-
-public interface ITaxCalculator
-{
-    decimal CalculateTax(decimal income);
-}
-
-public class StandardTaxCalculator : ITaxCalculator
-{
-    public decimal CalculateTax(decimal income)
-    {
-        return income * 0.2m; // Standard tax rate of 20%
-    }
-}
-
-public class ProgressiveTaxCalculator : ITaxCalculator
-{
-    private decimal incomeLimit;
-
-    public ProgressiveTaxCalculator(decimal incomeLimit = 50_000)
-    {
-        this.incomeLimit = incomeLimit;
-    }
-
-    public decimal CalculateTax(decimal income)
-    {
-        if (income <= incomeLimit)        // Magic Numbers
-        {
-            return income * 0.1m; // 10% tax for income up to 50000
-        }
-        else
-        {
-            return income * 0.3m; // 30% tax for income above 50000
-        }
-    }
-}
 
