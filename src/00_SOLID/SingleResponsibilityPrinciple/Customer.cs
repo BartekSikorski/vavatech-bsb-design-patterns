@@ -3,7 +3,6 @@
 // Każda klasa powinna być odpowiedzialna za jedną konkretną rzecz.
 // Klasa powinna mieć tylko jeden powód do zmiany.
 
-// #1 Przykład łamiący zasadę pojedynczej odpowiedzialności
 
 using System.Reflection;
 
@@ -17,30 +16,6 @@ class Customer
     public string Email { get; set; }    
 }
 
-
-
-// Przykład #2 łamiący zasadę pojedynczej odpowiedzialności
-
-public class Student
-{
-    public string Name { get; set; }
-    public string Email { get; set; }
-
-    public void Register()
-    {
-        // Register a student
-        // Perform validation and save to DB
-        Console.WriteLine("Registering the student");
-    }
-
-    public void EnrollInCourse()
-    {
-        // Enroll the student in a course
-        // Perform validation and save to DB
-        Console.WriteLine("Enrolling to the course");
-    }
-}
-
 // Przykład #3
 public class User
 {
@@ -48,12 +23,7 @@ public class User
     public string HashedPassword { get; set; }
 }
 public class Authentication
-{
-    //Register a user
-    public void RegisterUser(User user)
-    {
-    }
-
+{   
     // Perform user login
     public void Login(string username, string password)
     {
@@ -63,4 +33,12 @@ public class Authentication
     public void Logout()
     {
     }
+}
+
+public class Registration
+{
+    //Register a user
+    public void RegisterUser(User user)
+    {
+    }   
 }
