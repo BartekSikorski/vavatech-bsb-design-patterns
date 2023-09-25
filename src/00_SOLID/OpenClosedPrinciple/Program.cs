@@ -15,6 +15,13 @@ Console.WriteLine($"Progressive Tax: {progressiveTax}");
 
 public class TaxCalculator
 {
+    private decimal incomeLimit;
+
+    public TaxCalculator(decimal incomeLimit = 50_000)
+    {
+        this.incomeLimit = incomeLimit;
+    }
+
     public decimal CalculateTax(decimal income, string type)
     {
         decimal tax = 0;
@@ -25,7 +32,7 @@ public class TaxCalculator
         }
         else if (type == "Progressive")
         {
-            if (income <= 50000)
+            if (income <= incomeLimit)        // Magic Numbers
             {
                 tax = income * 0.1m; // 10% tax for income up to 50000
             }
