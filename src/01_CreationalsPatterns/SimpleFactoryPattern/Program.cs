@@ -35,13 +35,7 @@ namespace SimpleFactoryPattern
 
                         decimal totalAmount = visitCalculator.CalculateCost(visit);
 
-                        if (totalAmount == 0)
-                            Console.ForegroundColor = ConsoleColor.Green;
-                        else
-                           if (totalAmount >= 200)
-                            Console.ForegroundColor = ConsoleColor.Red;
-                        else
-                            Console.ForegroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColorFactory.Create(totalAmount);
 
                         Console.WriteLine($"Total amount {totalAmount:C2}");
 
