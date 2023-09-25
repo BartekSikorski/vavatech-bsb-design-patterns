@@ -47,7 +47,16 @@ namespace PrototypePattern
 
         private Invoice Copy()
         {
-            return new Invoice(this.Number, this.CreateDate, this.Customer);
+            var invoice = new Invoice(this.Number, this.CreateDate, this.Customer);
+
+            foreach (var detail in this.Details)
+            {
+                invoice.Details.Add((InvoiceDetail)detail.Clone());
+            }
+
+            invoice.PaymentStatus = this.PaymentStatus;
+
+            return invoice;
         }
 
         public object Clone()

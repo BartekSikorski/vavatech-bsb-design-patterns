@@ -16,7 +16,7 @@ namespace PrototypePattern.UnitTests
             // Arrange
             Customer customer = new Customer("John", "Smith");
             Invoice invoice = new Invoice("FA 1", DateTime.Parse("2022-03-01"), customer);
-            
+
             invoice.Paid(700);
 
             // Act
