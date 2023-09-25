@@ -7,9 +7,26 @@ namespace SingletonPattern
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello Singleton Pattern!");           
+            Console.WriteLine("Hello Singleton Pattern!");
 
-            LoadBalancerTest();
+            ConfigManager configManager = ConfigManager.Instance;
+            configManager.Set("name", "Marcin");
+
+            ConfigManager other = ConfigManager.Instance;
+            var name = other.Get("name");
+
+            if (ReferenceEquals(configManager, other))
+            {
+                Console.WriteLine("The same instance");
+            }
+            else
+            {
+                Console.WriteLine("Not the same instance");
+            }
+
+            Console.WriteLine(name);
+
+            // LoadBalancerTest();
 
             Console.ReadKey();
         }

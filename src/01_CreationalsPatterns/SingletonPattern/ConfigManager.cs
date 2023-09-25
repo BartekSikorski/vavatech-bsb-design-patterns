@@ -10,6 +10,25 @@ namespace SingletonPattern
     {
         private readonly Dictionary<string, object> settings = new Dictionary<string, object>();
 
+        private ConfigManager()
+        {
+        }
+
+        private static ConfigManager _instance;
+
+        public static ConfigManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ConfigManager();
+                }
+
+                return _instance;
+            }
+        }
+
         public void Set(string key, object value)
         {
             if (settings.ContainsKey(key))
@@ -32,5 +51,12 @@ namespace SingletonPattern
                 return null;
             
         }
+
+        public override bool Equals(object obj)
+        {
+            return true;
+        }
+
+        
     }
 }
