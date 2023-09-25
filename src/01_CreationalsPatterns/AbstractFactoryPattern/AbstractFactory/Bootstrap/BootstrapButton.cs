@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbstractFactoryPattern.AbstractFactory.Bootstrap
 {
+    // Concrete Component A
     public class BootstrapButton : IButton
     {
         public void Render()

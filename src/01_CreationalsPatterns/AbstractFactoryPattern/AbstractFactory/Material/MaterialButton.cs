@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbstractFactoryPattern.AbstractFactory.Material
 {
+    // Concrete Component A
     public class MaterialButton : IButton
     {
         public void Render()
