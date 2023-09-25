@@ -12,7 +12,7 @@ namespace PrototypePattern
         public decimal TotalAmount { get; set; }
     }
 
-    public class Invoice
+    public class Invoice : ICloneable
     {
         public Invoice(string number, DateTime createDate, Customer customer)
         {
@@ -43,6 +43,16 @@ namespace PrototypePattern
         public override string ToString()
         {
             return $"Invoice No {Number} {TotalAmount:C2} {Customer.FullName}";
+        }
+
+        private Invoice Copy()
+        {
+            return new Invoice(this.Number, this.CreateDate, this.Customer);
+        }
+
+        public object Clone()
+        {
+            return Copy();
         }
     }
 

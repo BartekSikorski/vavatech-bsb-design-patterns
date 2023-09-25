@@ -20,7 +20,7 @@ namespace PrototypePattern.UnitTests
             invoice.Paid(700);
 
             // Act
-            Invoice invoiceCopy = new Invoice(invoice.Number, invoice.CreateDate, invoice.Customer);
+            Invoice invoiceCopy = (Invoice) invoice.Clone();
 
             // Assert
             invoiceCopy.Should().NotBeSameAs(invoice);
@@ -28,6 +28,8 @@ namespace PrototypePattern.UnitTests
             invoiceCopy.Number.Should().Be("FA 1");
             invoiceCopy.CreateDate.Should().Be(DateTime.Parse("2022-03-01"));
             invoiceCopy.PaymentStatus.Should().Be(PaymentStatus.Paid);
+
+            invoiceCopy.Should().BeEquivalentTo(invoice);
             
         }
 
