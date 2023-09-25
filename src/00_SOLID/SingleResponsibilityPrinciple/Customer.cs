@@ -17,24 +17,6 @@ class Customer
     public string Email { get; set; }    
 }
 
-class Helper
-{
-    public static void ValidateEmail(string email)
-    {
-        if (!email.Contains("@") || !email.Contains("."))
-        {
-            throw new FormatException("Email address is a invalid format!");
-        }
-    }
-
-    public static void ValidatePostCode(string postcode)
-    {
-        if (postcode.Length != 5)
-        {
-            throw new FormatException("Post code is a invalid format!");
-        }
-    }
-}
 
 
 // Przykład #2 łamiący zasadę pojedynczej odpowiedzialności
