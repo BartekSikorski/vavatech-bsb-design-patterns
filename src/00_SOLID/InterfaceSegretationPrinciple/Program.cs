@@ -5,11 +5,18 @@
 
 // Przykład łamiący zasadę segregacji interfejsów
 
-IATM atm = new SecondATM(1000);
+var atm = new SecondATM(1000);
 
-atm.Withdraw(100);
+if (atm is IWithdrawable)
+{
+    atm.Withdraw(100);
+}
 
-atm.Deposit(50);
+if (atm is IDepositable atmDepositable)
+{
+    atmDepositable.Deposit(50);
+}
+
 
 var balance = atm.CheckBalance();
 
@@ -17,14 +24,26 @@ Console.WriteLine(balance);
 
 
 
-public interface IATM
+public interface IATM : ICheckBalance, IWithdrawable, IDepositable
 {
-    bool Withdraw(decimal amount); // Wypłata
-    void Deposit(decimal amount); // Wpłata
+}
+
+public interface ICheckBalance
+{
     decimal CheckBalance();
 }
 
-public class SecondATM : IATM
+public interface IWithdrawable
+{
+    bool Withdraw(decimal amount); // Wypłata
+}
+
+public interface IDepositable
+{
+    void Deposit(decimal amount); // Wpłata
+}
+
+public class SecondATM : ICheckBalance, IWithdrawable
 {
     private decimal balance;
 
@@ -36,11 +55,6 @@ public class SecondATM : IATM
     public decimal CheckBalance()
     {
         return balance;
-    }
-
-    public void Deposit(decimal amount)     // <-- problem
-    {
-        throw new NotSupportedException();   
     }
 
     public bool Withdraw(decimal amount)
@@ -58,7 +72,7 @@ public class SecondATM : IATM
     }
 }
 
-public class FirstATM : IATM
+public class FirstATM : ICheckBalance, IWithdrawable, IDepositable
 {
     private decimal balance;
 
