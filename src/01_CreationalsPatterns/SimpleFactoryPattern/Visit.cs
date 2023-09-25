@@ -17,24 +17,33 @@ namespace SimpleFactoryPattern
             PricePerHour = pricePerHour;
         }
 
-        public decimal CalculateCost(string kind)
+        public decimal CalculateCost(VisitType kind)
         {
             decimal cost = 0;
 
-            if (kind == "N")
+            switch (kind)         
             {
-                cost = 0;
-            }
-            else if (kind == "P")
-            {
-                cost = (decimal)Duration.TotalHours * PricePerHour;
-            }
-            else if (kind == "F")
-            {
-                cost = (decimal)Duration.TotalHours * PricePerHour * companyDiscountPercentage;
+                case VisitType.Nfz: 
+                    cost = 0;
+                    break;
+                case VisitType.Private:
+                    cost = (decimal)Duration.TotalHours * PricePerHour;
+                    break;
+                case VisitType.Company:
+                    cost = (decimal)Duration.TotalHours * PricePerHour * companyDiscountPercentage;
+                    break;
             }
 
             return cost;
         }
+    }
+
+
+    public enum VisitType
+    {
+        Nfz,
+        Private,
+        Company
+
     }
 }
