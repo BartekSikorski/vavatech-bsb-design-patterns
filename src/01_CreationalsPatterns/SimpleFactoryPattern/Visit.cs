@@ -2,45 +2,30 @@
 
 namespace SimpleFactoryPattern
 {
-    public class NfzVisit : Visit
+    public interface IValidator<T>
     {
-        public NfzVisit(TimeSpan duration, decimal pricePerHour) : base(duration, pricePerHour)
+        bool Validate(T value);
+    }
+
+    public class VisitValidator : IValidator<Visit>
+    {
+        public bool Validate(Visit value)
         {
+            Validate(value.Duration);
+
+            return true;
         }
 
-        public override decimal CalculateCost()
+        private static void Validate(TimeSpan duration)
         {
-            return 0;
+            if (duration < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(duration));
+            }
         }
     }
 
-    public class PrivateVisit : Visit
-    {
-        public PrivateVisit(TimeSpan duration, decimal pricePerHour) : base(duration, pricePerHour)
-        {
-        }
-
-        public override decimal CalculateCost()
-        {
-            return (decimal)Duration.TotalHours * PricePerHour;
-        }
-    }
-
-    public class CompanyVisit : Visit
-    {
-        private decimal companyDiscountPercentage;
-
-        public CompanyVisit(TimeSpan duration, decimal pricePerHour, decimal companyDiscountPercentage) : base(duration, pricePerHour)
-        {
-            this.companyDiscountPercentage = companyDiscountPercentage;
-        }
-
-        public override decimal CalculateCost()
-        {
-            return (decimal)Duration.TotalHours * PricePerHour * companyDiscountPercentage;
-        }
-    }
-
+    // Abstract Product
     public abstract class Visit
     {
         public DateTime VisitDate { get; set; }
@@ -53,6 +38,8 @@ namespace SimpleFactoryPattern
             Duration = duration;
             PricePerHour = pricePerHour;
         }
+
+      
 
         public abstract decimal CalculateCost();
     }
