@@ -3,8 +3,6 @@
 // Kod nie powinien być zmuszany do polegania na metodach, których nie używa.
 
 
-// Przykład łamiący zasadę segregacji interfejsów
-
 var atm = new SecondATM(1000);
 
 if (atm is IWithdrawable)
