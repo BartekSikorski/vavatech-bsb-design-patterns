@@ -4,13 +4,13 @@ using System.Text;
 
 namespace SingletonPattern
 {
-    public class LoadBalancer
+    public class LoadBalancer : ThreadSafeSingleton<LoadBalancer>
     {
         private readonly List<Server> servers;
 
         private readonly Random random = new Random();
 
-        private LoadBalancer()
+        public LoadBalancer()
         {
             Console.WriteLine("Initialize");
 
@@ -24,24 +24,7 @@ namespace SingletonPattern
             };
         }
 
-        private static object syncLock = new object();
-
-        private static LoadBalancer _instance;
-        public static LoadBalancer Instance
-        {
-            get
-            {
-                lock (syncLock)                             // Monitor.Enter(syncLock);
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new LoadBalancer();
-                    }
-                }                                           // Monitor.Exit(syncLock);
-
-                return _instance;
-            }
-        }
+       
 
         // Simple Load Balancer
         public Server NextServer => servers[random.Next(servers.Count)];
