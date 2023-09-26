@@ -2,6 +2,26 @@
 
 namespace BridgePattern.UnitTests
 {
+    [TestClass]
+    public class BridgeCustomerTests
+    {
+        [TestMethod]
+        public void Copy_FakeToPdf_Should()
+        {
+            // Arrange
+            ICustomerQuery customerService = new FakeCustomerService();
+            ICustomerCommands customerTarget = new PdfCustomerTarget();
+
+            BridgeCustomer bridgeCustomer = new BridgeCustomer(customerService, customerTarget);
+
+            // Act
+            bridgeCustomer.Copy();
+
+            // Assert
+
+        }
+    }
+
 
     [TestClass]
     public class BluetoothRemoteControlSamsungLedTVTests
