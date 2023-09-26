@@ -14,9 +14,34 @@ namespace BuilderPattern
         {
             Console.WriteLine("Hello Builder Pattern!");
 
+            Presentation presentation = new Presentation();
+            presentation.AddSlide(new Slide("Design Patterns in C#"));
+            presentation.AddSlide(new Slide("Creationals Patterns"));
+            presentation.AddSlide(new Slide("Structurals Patterns"));
+            presentation.AddSlide(new Slide("Behaviorals Patterns"));
+
+            PdfPresentationBuilder pdfPresentationBuilder = new PdfPresentationBuilder();
+
+            presentation.Export(pdfPresentationBuilder);
+
+            var pdf = pdfPresentationBuilder.GetPdfDocument();
+
+            Console.WriteLine(pdf);
+
+            MoviePresentationBuilder moviePresentationBuilder = new MoviePresentationBuilder();
+
+            presentation.Export(moviePresentationBuilder);
+
+            var movie = moviePresentationBuilder.GetMovie();
+
+
+            PowerPointPresentationBuilder powerPointPresentationBuilder = new PowerPointPresentationBuilder(Orientation.Landscape);
+            presentation.Export(powerPointPresentationBuilder);
+            var powerPoint = powerPointPresentationBuilder.GetDocument();
+
             //PhoneTest();
 
-            SalesReportTest();
+          //  SalesReportTest();
 
             // PersonTest();
         }

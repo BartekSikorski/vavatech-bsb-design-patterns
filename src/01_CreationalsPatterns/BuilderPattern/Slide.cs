@@ -16,6 +16,7 @@ namespace BuilderPattern
         }
     }
 
+    // Director
     public class Presentation
     {
         private List<Slide> slides = new List<Slide>();
@@ -25,26 +26,16 @@ namespace BuilderPattern
             slides.Add(slide);
         }
 
-        public void Export(PresentationFormat format)
+        public void Export(IPresentationBuilder builder)
         {
-            if (format == PresentationFormat.PDF)
+            builder.AddSlide(new Slide("Copyright"));
+
+            foreach (Slide slide in slides)
             {
-                var pdf = new PdfDocument();
-                pdf.AddPage("Copyright");
-                foreach(Slide slide in slides)
-                {
-                    pdf.AddPage(slide.Text);
-                }                
+                builder.AddSlide(slide);
             }
-            else if (format == PresentationFormat.Movie)
-            {
-                var movie = new Movie();
-                movie.AddFrame("Copyright", 3);
-                foreach (Slide slide in slides)
-                {
-                    movie.AddFrame(slide.Text, 3);
-                }
-            }
+
+            builder.AddFooter();
         }
     }
 
@@ -60,7 +51,7 @@ namespace BuilderPattern
     {
         public void AddPage(string text)
         {
-            Console.WriteLine($"Add a page to PDF");
+            Console.WriteLine($"Add {text} to page to PDF");
         }
     }
 
@@ -68,7 +59,7 @@ namespace BuilderPattern
     {
         public void AddFrame(string text, int duration)
         {
-            Console.WriteLine($"Add a frame to the movie");
+            Console.WriteLine($"Add {text} to frame to the movie");
         }
     }
 }
