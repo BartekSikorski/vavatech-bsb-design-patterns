@@ -1,22 +1,27 @@
 namespace CompositePattern;
 
-public class Group
+// Concrete Component B
+// Branch
+public class Group : Component
 {
-    private List<object> objects = new List<object>();
+    private List<Component> components = new List<Component>();
 
-    public void Add(Object shape)
+    public Group(string name) : base(name)
     {
-        objects.Add(shape);
     }
 
-    public void Render()
+    public void Add(Component shape)
     {
-        foreach (var obj in objects)
+        components.Add(shape);
+    }
+
+    public override void Render()
+    {
+        Console.WriteLine($"Render group {Name}");
+
+        foreach (var component in components)
         {
-            if (obj is Shape)
-                ((Shape)obj).Render();
-            else 
-                ((Group)obj).Render();
+            component.Render();            
         }
     }
 }
