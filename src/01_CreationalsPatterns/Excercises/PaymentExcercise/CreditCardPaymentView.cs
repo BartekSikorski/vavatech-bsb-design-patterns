@@ -2,7 +2,7 @@
 
 namespace PaymentExcercise
 {
-    public class CreditCardPaymentView
+    public class CreditCardPaymentView :IPaymentView
     {
         public void Show(Payment payment)
         {

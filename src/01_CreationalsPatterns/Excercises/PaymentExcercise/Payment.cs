@@ -6,19 +6,17 @@ namespace PaymentExcercise
 {
     public class Payment
     {
-        public DateTime PaymentDate { get; set; }
-        public PaymentType PaymentType { get; set; }
+        public DateTime PaymentDate { get; set; }        
         public decimal TotalAmount { get; set; }
 
-        public Payment(DateTime paymentDate, PaymentType paymentType, decimal totalAmount)
+        public Payment(DateTime paymentDate, decimal totalAmount)
         {
-            PaymentDate = paymentDate;
-            PaymentType = paymentType;
+            PaymentDate = paymentDate;            
             TotalAmount = totalAmount;
         }
 
-        public Payment(PaymentType paymentType, decimal totalAmount)
-            :this(DateTime.Now, paymentType, totalAmount)
+        public Payment(decimal totalAmount)
+            :this(DateTime.Now, totalAmount)
         { }
 
     }

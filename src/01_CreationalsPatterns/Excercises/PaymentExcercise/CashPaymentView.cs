@@ -2,7 +2,16 @@
 
 namespace PaymentExcercise;
 
-public class CashPaymentView
+
+// Abstract Product
+public interface IPaymentView
+{
+    void Show(Payment payment);
+}
+
+
+// Concrete Product A
+public class CashPaymentView : IPaymentView
 {
     public void Show(Payment payment)
     {

@@ -2,7 +2,7 @@
 
 namespace PaymentExcercise;
 
-public class BankTransferPaymentView 
+public class BankTransferPaymentView  : IPaymentView
 {
     public void Show(Payment payment)
     {
