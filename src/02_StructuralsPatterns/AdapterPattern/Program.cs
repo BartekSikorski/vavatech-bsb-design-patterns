@@ -10,28 +10,35 @@ namespace AdapterPattern
         {
             Console.WriteLine("Hello Adapter Pattern!");
 
-            MotorolaRadioTest();
+            RadioTest();
 
-            HyteraRadioTest();
+            DataAdapterTest();
 
         }
 
-        private static void MotorolaRadioTest()
+        private static void DataAdapterTest()
         {
-            MotorolaRadio radio = new MotorolaRadio();
-            radio.PowerOn("1234");
-            radio.SelectChannel(10);
-            radio.Send("Hello World!");
-            radio.PowerOff();
+            Connection connection = new Connection();
+
+            // Assumes that connection is a valid SqlConnection object.  
+            string queryString =
+              "SELECT CustomerID, CompanyName FROM dbo.Customers";
+
+            IDbDataAdapter adapter = new SqlDataAdapter(queryString, connection);
+
+            DataSet customers = new DataSet();
+            adapter.Fill(customers, "Customers");
+
+            IDbDataAdapter csvAdapter = new CsvDataAdapter("customers.csv", ';');
+            csvAdapter.Fill(customers, "customers");
         }
 
-        private static void HyteraRadioTest()
+        private static void RadioTest()
         {
-            HyteraRadio radio = new HyteraRadio();
-            radio.Init();
-            radio.SendMessage(10, "Hello World!");
-            radio.Release();
+            ITextRadioAdapter radio = RadioAdapterFactory.Create("Hytera");
+            radio.SendMessage("Hello World!", "10");
         }
+
     }
 
     
