@@ -5,43 +5,45 @@ namespace BridgePattern.UnitTests
     [TestClass]
     public class InfraredRemoteControlSonyLedTVTests
     {
+        private ILedTV ledTV;
+        private IRemoteControl remoteControl;
+
+        [TestInitialize]
+        public void Init()
+        {
+            // Arrange
+            ledTV = new SonyLedTV();
+            remoteControl = new InfraredRemoteControl(ledTV);
+        }
+
         [TestMethod]
         public void SwitchOn_ShouldOnTrue()
         {
-            // Arrange
-            InfraredRemoteControlSonyLedTV ledTV = new InfraredRemoteControlSonyLedTV();
-
             // Act
             ledTV.SwitchOn();
 
             //
-            Assert.IsTrue(ledTV.IsSwitchOn);
+            Assert.IsTrue(ledTV.On);
         }
 
         [TestMethod]
         public void SwitchOn_ShouldOnFalse()
         {
-            // Arrange
-            InfraredRemoteControlSonyLedTV ledTV = new InfraredRemoteControlSonyLedTV();
-
             // Act
             ledTV.SwitchOff();
 
             //
-            Assert.IsFalse(ledTV.IsSwitchOn);
+            Assert.IsFalse(ledTV.On);
         }
 
         [TestMethod]
         public void SetChannel_ShouldSetCurrentChannel()
         {
-            // Arrange
-            InfraredRemoteControlSonyLedTV ledTV = new InfraredRemoteControlSonyLedTV();
-
             // Act
             ledTV.SetChannel(10);
 
             //
-            Assert.AreEqual(10, ledTV.SelectedChannel);
+            Assert.AreEqual(10, ledTV.CurrentChannel);
         }
     }
 }

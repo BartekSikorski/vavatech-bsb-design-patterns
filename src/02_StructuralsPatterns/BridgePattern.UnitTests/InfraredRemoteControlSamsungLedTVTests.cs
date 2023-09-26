@@ -5,12 +5,20 @@ namespace BridgePattern.UnitTests
     [TestClass]
     public class InfraredRemoteControlSamsungLedTVTests
     {
+        private ILedTV ledTV;
+        private IRemoteControl remoteControl;
+
+        [TestInitialize]
+        public void Init()
+        {
+            // Arrange
+            ledTV = new SamsungLedTV();
+            remoteControl = new InfraredRemoteControl(ledTV);
+        }
+
         [TestMethod]
         public void SwitchOn_ShouldOnTrue()
         {
-            // Arrange
-            InfraredRemoteControlSamsungLedTV ledTV = new InfraredRemoteControlSamsungLedTV();
-
             // Act
             ledTV.SwitchOn();
 
@@ -21,9 +29,6 @@ namespace BridgePattern.UnitTests
         [TestMethod]
         public void SwitchOn_ShouldOnFalse()
         {
-            // Arrange
-            InfraredRemoteControlSamsungLedTV ledTV = new InfraredRemoteControlSamsungLedTV();
-
             // Act
             ledTV.SwitchOff();
 
@@ -34,9 +39,6 @@ namespace BridgePattern.UnitTests
         [TestMethod]
         public void SetChannel_ShouldSetCurrentChannel()
         {
-            // Arrange
-            InfraredRemoteControlSamsungLedTV ledTV = new InfraredRemoteControlSamsungLedTV();
-
             // Act
             ledTV.SetChannel(10);
 

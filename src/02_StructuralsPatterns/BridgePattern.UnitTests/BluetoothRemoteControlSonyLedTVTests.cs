@@ -5,43 +5,45 @@ namespace BridgePattern.UnitTests
     [TestClass]
     public class BluetoothRemoteControlSonyLedTVTests
     {
-        [TestMethod]
-        public void SwitchOn_ShouldOnTrue()
+        private ILedTV ledTV;
+        private IRemoteControl remoteControl;
+
+        [TestInitialize]
+        public void Init()
         {
             // Arrange
-            BluetoothRemoteControlSonyLedTV ledTV = new BluetoothRemoteControlSonyLedTV();
+            ledTV = new SonyLedTV();
+            remoteControl = new BluetoothRemoteControl(ledTV);
+        }
 
+        [TestMethod]
+        public void SwitchOn_ShouldOnTrue()
+        {           
             // Act
             ledTV.SwitchOn();
 
             //
-            Assert.IsTrue(ledTV.IsSwitchOn);
+            Assert.IsTrue(ledTV.On);
         }
 
         [TestMethod]
         public void SwitchOn_ShouldOnFalse()
         {
-            // Arrange
-            BluetoothRemoteControlSonyLedTV ledTV = new BluetoothRemoteControlSonyLedTV();
-
             // Act
             ledTV.SwitchOff();
 
             //
-            Assert.IsFalse(ledTV.IsSwitchOn);
+            Assert.IsFalse(ledTV.On);
         }
 
         [TestMethod]
         public void SetChannel_ShouldSetCurrentChannel()
         {
-            // Arrange
-            BluetoothRemoteControlSonyLedTV ledTV = new BluetoothRemoteControlSonyLedTV();
-
             // Act
             ledTV.SetChannel(10);
 
             //
-            Assert.AreEqual(10, ledTV.SelectedChannel);
+            Assert.AreEqual(10, ledTV.CurrentChannel);
         }
     }
 }
