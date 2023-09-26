@@ -5,13 +5,53 @@ using System.Linq;
 
 namespace ProxyPattern
 {
-    public class CacheProductRepository
+    // Proxy
+    public class CounterProductRepository : IProductRepository
+    {
+        private readonly IProductRepository _repository;
+
+        public CounterProductRepository(IProductRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public int Counter { get; private set; }
+
+        public Product Get(int id)
+        {
+            Counter++;
+            return _repository.Get(id);
+        }
+    }
+
+    //public class CacheProductRepositoryClass : DbProductRepository, IProductRepository
+    //{
+
+    //    public override Product Get(int id)
+    //    {
+    //        // TODO: add cache
+
+    //        return base.Get(id);
+    //    }
+    //}
+
+    // OrderProxy : Order
+    // Console.WriteLine(Order.Customer.Name);
+
+    // Pośrednik (Proxy)
+    // Wariant obiektowy
+    public class CacheProductRepository : IProductRepository
     {
         private IDictionary<int, Product> products;
 
-        public CacheProductRepository()
+        // Real Subject
+        private readonly IProductRepository productRepository;
+
+        public CacheProductRepository(IProductRepository productRepository)
         {
             products = new Dictionary<int, Product>();
+
+            this.productRepository = productRepository;
         }
 
         public void Add(Product product)
@@ -28,7 +68,16 @@ namespace ProxyPattern
                 return product;
             }
             else
-                return null;            
+            {
+                product = productRepository.Get(id);
+
+                if (product != null)
+                {
+                    Add(product);
+                }
+
+                return product;
+            }
         }
 
     }

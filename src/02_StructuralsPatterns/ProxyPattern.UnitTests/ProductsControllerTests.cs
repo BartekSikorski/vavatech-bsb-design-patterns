@@ -11,8 +11,8 @@ namespace ProxyPattern.UnitTests
         public void Init()
         {
             productsController = new ProductsController(
-                   new DbProductRepository(),
-               new CacheProductRepository());
+                                new CacheProductRepository(
+                                    new CounterProductRepository(new DbProductRepository())));
         }
 
         [TestMethod]
