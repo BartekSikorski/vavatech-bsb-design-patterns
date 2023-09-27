@@ -16,10 +16,10 @@ namespace ChainOfResponsibilityPattern.Handlers
             this.next = next;
         }
 
-        public virtual void Handle(Message message)
+        public virtual void Handle(MessageContext context)
         {
             if (next != null)
-                next.Handle(message);
+                next.Handle(context);
         }
     }
 

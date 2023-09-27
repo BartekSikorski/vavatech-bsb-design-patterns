@@ -13,11 +13,11 @@ namespace ChainOfResponsibilityPattern.Handlers
             this.content = content;
         }
 
-        public override void Handle(Message message)
+        public override void Handle(MessageContext context)
         {
-            ValidateTitleContains(message, content);
+            ValidateTitleContains(context.Request, content);
 
-            base.Handle(message);
+            base.Handle(context);
         }
 
         private static void ValidateTitleContains(Message message, string content)

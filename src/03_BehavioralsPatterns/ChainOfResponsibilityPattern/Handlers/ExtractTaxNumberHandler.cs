@@ -7,11 +7,13 @@ namespace ChainOfResponsibilityPattern.Handlers
     // Concrete Handler C
     public class ExtractTaxNumberHandler : MessageHandler, IMessageHandler
     {
-        public override void Handle(Message message)
+        public override void Handle(MessageContext context)
         {
-            var taxNumber = ExtractTaxNumber(message);
+            var taxNumber = ExtractTaxNumber(context.Request);
 
-            base.Handle(message);
+            context.Response.TaxNumber = taxNumber;
+
+            base.Handle(context);
         }
 
         private static string ExtractTaxNumber(Message message)
