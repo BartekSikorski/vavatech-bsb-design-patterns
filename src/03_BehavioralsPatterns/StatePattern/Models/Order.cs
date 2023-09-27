@@ -44,6 +44,7 @@ namespace StatePattern
 
         }
 
+        // http://www.webgraphviz.com
         public string Graph => Stateless.Graph.UmlDotGraph.Format(machine.GetInfo());
 
         public Guid Id { get; set; }
