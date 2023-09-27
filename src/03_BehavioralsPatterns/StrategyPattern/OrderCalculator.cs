@@ -1,6 +1,5 @@
 ﻿using StrategyPattern.CanDiscountStrategies;
 using StrategyPattern.DiscountStrategies;
-using System;
 
 namespace StrategyPattern
 {
@@ -23,14 +22,6 @@ namespace StrategyPattern
             }
             else
                 return discountStrategy.NoDiscount;                       // NoDiscount
-        }
-    }
-
-    public class CanDiscountStrategyFactory
-    {
-        public static ICanDiscountStrategy[] Create(Order order)
-        {
-            throw new NotImplementedException();
         }
     }
 
