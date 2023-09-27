@@ -1,71 +1,58 @@
-﻿using System;
+﻿using Stateless;
+using System;
 using System.Diagnostics.Tracing;
+using System.Threading.Channels;
 
 namespace StatePattern
 {
+    // Install-Package Stateless
     public class Order
     {
+        private readonly StateMachine<OrderStatus, OrderTrigger> machine;
 
         public Order(OrderStatus initialState = OrderStatus.Placement)
-        {            
+        {
             Id = Guid.NewGuid();
             OrderDate = DateTime.Now;
-            Status = initialState;
+
+            machine = new StateMachine<OrderStatus, OrderTrigger>(OrderStatus.Placement);
+
+            machine.Configure(OrderStatus.Placement)
+                .OnEntry(() => Console.WriteLine("Send welcome email"))
+                .OnExit(() => Console.WriteLine("Send in progress email"))
+                .PermitIf(OrderTrigger.Confirm, OrderStatus.Picking, () => IsPaid)
+                .Permit(OrderTrigger.Cancel, OrderStatus.Canceled);
+
+            machine.Configure(OrderStatus.Picking)
+                .OnEntry(() => Console.WriteLine("kompletacja"))
+                .Permit(OrderTrigger.Confirm, OrderStatus.Shipping);
+
+            machine.Configure(OrderStatus.Shipping)
+                .Permit(OrderTrigger.Confirm, OrderStatus.Delivered);
+
+            machine.Configure(OrderStatus.Delivered)
+                .Permit(OrderTrigger.Confirm, OrderStatus.Completed)
+                .Permit(OrderTrigger.Cancel, OrderStatus.Canceled);
+
+            //   machine.OnTransitioned()           
+
         }
+
+        public string Graph => Stateless.Graph.UmlDotGraph.Format(machine.GetInfo());
 
         public Guid Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public OrderStatus Status { get; private set; }
-        public bool IsPaid { get; private set; }       
+        public OrderStatus Status => machine.State;
+        public bool IsPaid { get; private set; }
 
         public void Paid()
         {
             IsPaid = true;
         }
 
-        public void Confirm()
-        {
-            if (Status == OrderStatus.Placement)
-            {
-                if (IsPaid)
-                {
-                    Status = OrderStatus.Picking;
-                }                
-            }
-            else if (Status == OrderStatus.Picking)
-            {
-                Status = OrderStatus.Shipping;
-            }
-            else if (Status == OrderStatus.Shipping)
-            {
-                Status = OrderStatus.Delivered;
-            }
-            else if (Status == OrderStatus.Delivered)
-            {
-                Status = OrderStatus.Completed;
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+        public void Confirm() => machine.Fire(OrderTrigger.Confirm);
 
-        }
-
-        public void Cancel()
-        {
-            if (Status == OrderStatus.Placement)
-            {
-                Status = OrderStatus.Canceled;
-            }
-            else if (Status == OrderStatus.Delivered)
-            {
-                Status = OrderStatus.Canceled;
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
-        }
+        public void Cancel() => machine.Equals(OrderTrigger.Cancel);
 
         public override string ToString() => $"Order {Id} created on {OrderDate}{Environment.NewLine}";
 
@@ -88,6 +75,12 @@ namespace StatePattern
         // The customer canceled order
         Canceled
 
+    }
+
+    public enum OrderTrigger
+    {
+        Confirm,
+        Cancel
     }
 
 }
