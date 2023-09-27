@@ -24,17 +24,23 @@ namespace ChainOfResponsibilityPattern.Models
         }
 
         public string Process(Message message)
-        {            
-            if (!whiteList.Contains(message.From))
-            {
-                throw new Exception();
-            }
+        {
+            ValidateFromWhiteList(message);
+            ValidateTitleContains(message, "Order");
+            var taxNumber = ExtractTaxNumber(message);
+            ValidateTaxNumber(taxNumber);
 
-            if (!message.Title.Contains("Order"))
-            {
-                throw new Exception();
-            }
+            return taxNumber;
 
+        }
+
+        private static void ValidateTaxNumber(string taxNumber)
+        {
+            
+        }
+
+        private static string ExtractTaxNumber(Message message)
+        {
             string pattern = @"\b(\d{10}|\d{3}-\d{3}-\d{2}-\d{2})\b";
             Regex regex = new Regex(pattern);
             Match match = regex.Match(message.Body);
@@ -49,8 +55,22 @@ namespace ChainOfResponsibilityPattern.Models
             {
                 throw new FormatException();
             }
+        }
 
-            
+        private static void ValidateTitleContains(Message message, string content)
+        {
+            if (!message.Title.Contains(content))
+            {
+                throw new Exception();
+            }
+        }
+
+        private void ValidateFromWhiteList(Message message)
+        {
+            if (!whiteList.Contains(message.From))
+            {
+                throw new Exception();
+            }
         }
     }
 }
