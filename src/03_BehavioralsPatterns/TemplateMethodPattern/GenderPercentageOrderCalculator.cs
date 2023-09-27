@@ -15,12 +15,12 @@
 
         public decimal CalculateDiscount(Order order)
         {
-            if (order.Customer.Gender == gender)
+            if (order.Customer.Gender == gender)              // Warunek (Predykat)
             {
-                return order.Amount * percentage;
+                return order.Amount * percentage;             // Upust (Discount)
             }
             else
-                return 0;
+                return 0;                                     // Brak upustu (NoDiscount)
         }
     }
 }
