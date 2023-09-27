@@ -19,14 +19,16 @@ namespace ChainOfResponsibilityPattern.UnitTests.UnitTests
             string content = "Order";
 
             // Konfiguracja lancucha
+            IMessageHandler exceptionHandler = new ConsoleLoggerExceptionMessageHandler();
             IMessageHandler validateFromWhiteListHandler = new ValidateFromWhiteListHandler(whiteList);
             IMessageHandler validateTitleContainsHandler = new ValidateTitleContainsHandler(content);
             IMessageHandler extractTaxNumberHandler = new ExtractTaxNumberHandler();
 
+            exceptionHandler.SetNext(validateFromWhiteListHandler);
             validateFromWhiteListHandler.SetNext(validateTitleContainsHandler);
             validateTitleContainsHandler.SetNext(extractTaxNumberHandler);
 
-            messageProcessor = new MessageProcessor(validateFromWhiteListHandler);
+            messageProcessor = new MessageProcessor(exceptionHandler);
 
         }
 
