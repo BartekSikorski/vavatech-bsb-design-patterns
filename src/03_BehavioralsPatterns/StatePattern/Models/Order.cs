@@ -34,7 +34,13 @@ namespace StatePattern
                 .Permit(OrderTrigger.Confirm, OrderStatus.Completed)
                 .Permit(OrderTrigger.Cancel, OrderStatus.Canceled);
 
-            //   machine.OnTransitioned()           
+            machine.OnTransitioned(transition =>
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"[{transition.Trigger}] {transition.Source} -> {transition.Destination}");
+                Console.ResetColor();
+
+            });
 
         }
 
