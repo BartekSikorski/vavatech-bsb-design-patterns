@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChainOfResponsibilityPattern.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,61 +17,16 @@ namespace ChainOfResponsibilityPattern.Models
 
     public class MessageProcessor
     {
-        private string[] whiteList;
+        private readonly IMessageHandler startMessageHandler;
 
-        public MessageProcessor(string[] whiteList)
-        {
-            this.whiteList = whiteList;
-        }
+        public MessageProcessor(IMessageHandler messageHandler) => this.startMessageHandler = messageHandler;
 
         public string Process(Message message)
         {
-            ValidateFromWhiteList(message);
-            ValidateTitleContains(message, "Order");
-            var taxNumber = ExtractTaxNumber(message);
-            ValidateTaxNumber(taxNumber);
+            startMessageHandler.Handle(message);
 
-            return taxNumber;
+            throw new NotImplementedException();            
 
-        }
-
-        private static void ValidateTaxNumber(string taxNumber)
-        {
-            
-        }
-
-        private static string ExtractTaxNumber(Message message)
-        {
-            string pattern = @"\b(\d{10}|\d{3}-\d{3}-\d{2}-\d{2})\b";
-            Regex regex = new Regex(pattern);
-            Match match = regex.Match(message.Body);
-
-            if (match.Success)
-            {
-                string taxNumber = match.Value;
-
-                return taxNumber;
-            }
-            else
-            {
-                throw new FormatException();
-            }
-        }
-
-        private static void ValidateTitleContains(Message message, string content)
-        {
-            if (!message.Title.Contains(content))
-            {
-                throw new Exception();
-            }
-        }
-
-        private void ValidateFromWhiteList(Message message)
-        {
-            if (!whiteList.Contains(message.From))
-            {
-                throw new Exception();
-            }
         }
     }
 }
