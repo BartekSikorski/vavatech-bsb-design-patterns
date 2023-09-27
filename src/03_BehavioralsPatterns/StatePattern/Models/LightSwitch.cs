@@ -1,40 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Channels;
 
 namespace StatePattern
 {
+
+    // Context
     public class LightSwitch
     {
-        public LightSwitchState State { get; set; }
+        private LightSwitchState state;
+        public LightSwitchState State { 
+            get
+            {
+                return state;
+            }
+
+            set
+            {
+                Console.WriteLine($"{state} -> {value}");
+
+                state = value;
+            }
+        }
 
         public LightSwitch()
         {
-            State = LightSwitchState.Off;
+            State = new Off(this);
         }
 
-        public void Push()
-        {
-            if (State == LightSwitchState.Off)
-            {
-                Console.WriteLine("załącz przekaźnik");
-
-                State = LightSwitchState.On;
-                return;
-            }
-
-            if (State == LightSwitchState.On)
-            {
-                Console.WriteLine("wyłącz przekaźnik");
-
-                State = LightSwitchState.Off;
-                return;
-            }
-        }
+        public void Push() => State.Push();
     }
 
-    public enum LightSwitchState
+
+    public class Lamp
     {
-        On,
-        Off
+        private Dictionary<string, Action> states = new Dictionary<string, Action>();
+
+        public void Trigger(string state)
+        {
+
+        }
+
+        public Lamp()
+        {
+            states.Add("ON", () => Console.WriteLine("->on"));
+            states.Add("OFF", () => Console.WriteLine("->off"));
+        }
+
     }
+  
 
 }
